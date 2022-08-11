@@ -1,0 +1,79 @@
+﻿@model  AdministratorApp.Models.ServiceForClient
+<div>
+    <dl class="dl-horizontal">
+        <dt class="text-black h3">
+            @ViewBag.Name (@Model.Client.Client_Name)
+        </dt>
+    </dl>
+</div>
+<form asp-action="EditServiceForClient" asp-controller="ServiceForClient">
+    <input type="hidden" value="@Model.ServiceId" name="service_id" />
+    <input type="hidden" value="@Model.ClientId" name="client_id" />
+    <div>
+        <table class="table">
+            <tr>
+                <td>
+                    <label asp-for="Service_For_Client_Start_Date" class="control-label"></label>
+                </td>
+                <td>
+                    <input class="form-control" asp-for="Service_For_Client_Start_Date" asp-format="{0:yyyy-MM-ddTHH:mm}" />
+                </td>
+                <td>
+                    <label asp-for="Service_For_Client_Actual_End_Date" class="control-label"></label>
+                </td>
+                <td>
+                    <input class="form-control" asp-for="Service_For_Client_Actual_End_Date" asp-format="{0:yyyy-MM-ddTHH:mm}" />
+                </td>
+                <td>
+                    <label asp-for="Service_For_Client_Deadline_Date" class="control-label"></label>
+                </td>
+                <td>
+                    <input class="form-control" asp-for="Service_For_Client_Deadline_Date" asp-format="{0:yyyy-MM-ddTHH:mm}" />
+                </td>
+                </tr>
+            <tr>
+                <td>
+                    <label asp-for="Service_For_Client_Payment_Date" class="control-label"></label>
+                </td>
+                <td>
+                    <input class="form-control" asp-for="Service_For_Client_Payment_Date" asp-format="{0:yyyy-MM-ddTHH:mm}" />
+                </td>
+                <td>
+                    <label asp-for="Service_For_Client_Elapsed_Time" class="control-label"></label>
+                </td>
+                    @if (@ViewBag.Minutes == true)
+                    {
+                        <td>
+                            <input class="form-control" type="time" asp-for="Service_For_Client_Elapsed_Time" asp-format="{0:mm}" />
+                            Minutes
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <input class="form-control" type="time" asp-for="Service_For_Client_Elapsed_Time" asp-format="{0:hh}" />
+                            Hours
+                        </td>
+                    }
+            </tr>
+            <tr>
+                <td>Order is paid:</td>
+                <td>
+                    @Html.CheckBox("Service_For_Client_Payment_Status", @Model.Service_For_Client_Payment_Status)
+                </td>
+            </tr>
+            <tr>
+                <td>Service is done:</td>
+                <td>
+                    @Html.CheckBox("Service_For_Client_Execution_Status", @Model.Service_For_Client_Execution_Status)
+                </td>
+             </tr>
+        </table>
+    </div>
+    <div>
+        <input type="submit" class=" btn btn-outline-dark" value="Save" />
+        <a asp-action="DeleteServiceForClient" asp-controller="ServiceForClient" asp-route-client_id="@Model.ClientId" asp-route-service_id="@Model.ServiceId">
+            <span class="btn btn-outline-dark">Delete</span>
+        </a>
+    </div>
+</form>

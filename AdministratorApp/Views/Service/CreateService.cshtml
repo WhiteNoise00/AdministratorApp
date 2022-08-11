@@ -1,0 +1,22 @@
+﻿@model AdministratorApp.Models.Service
+@{
+    ViewBag.Title = "Adding a new Service";
+}
+<form asp-action="CreateService" asp-controller="service">
+    <div class="form-group p-1">
+        <label asp-for="Service_Name" class="control-label p-1"></label>
+        <input type="text" asp-for="Service_Name" class="form-control" />
+        <span asp-validation-for="Service_Name" class="text-danger"></span>
+    </div>
+    <div class="form-group p-1">
+        <label asp-for="Service_Description" class="control-label p-1"></label>
+        <input type="text" asp-for="Service_Description" class="form-control" />
+        <span asp-validation-for="Service_Description" class="text-danger"></span>
+    </div>
+    <div class="form-group p-1">
+        <input type="checkbox" name="selectedTime" value="true" />Calculate service time in minutes <br />
+    </div>
+    <div class="form-group p-1">
+        <input class="btn btn-outline-dark" type="submit" value="Save" />
+    </div>
+</form>

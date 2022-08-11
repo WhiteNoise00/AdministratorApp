@@ -1,0 +1,121 @@
+﻿@model IndexViewModel
+@using AdministratorApp.Models
+<form method="get">
+    <table class="table">
+        <tr>
+            <td align="right"><label class="control-label"></label>Client:</td>
+            <td><input name="name" class="form-control" /></td>
+            <td align="right"><label class="control-label">Services:</label></td>
+            <td><select name="id" asp-items="@ViewBag.ServicesList" class="form-control"></select></td>
+            <td><input class="btn btn-outline-dark" type="submit" value="Search" /></td>
+        </tr>
+    </table>
+</form>
+<table class="table table-striped table-bordered" border="1" width="39%">
+    <thead>
+        <tr>
+            <th>Client:</th>
+            <th>Contact details:</th>
+            <th>List of services:</th>
+            <th>Status complete:</th>
+            <th>Status pay:</th>
+            <th>Deadline:</th>
+            <th>The date of payment:</th>
+            <th>Actions:</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Clients)
+         {
+            <tr>
+            <td>@item.Client_Name</td>
+            <td>@item.Client_Contact_Person, @item.Client_Contact_Phone, @item.Client_Contact_Email</td>
+            <td>
+            <ul>
+            @foreach (var i in item.ServicesForClients)
+                {
+                    <li><a asp-action="EditServiceForClient" asp-controller="serviceforclient" asp-route-client_id="@item.Id" asp-route-service_id="@i.ServiceId">@i.Service.Service_Name</a></li>
+                }
+            </ul>
+            </td>
+            <td>
+            <ul>
+            @foreach (var i in item.ServicesForClients)
+            {
+                @if (@i.Service_For_Client_Execution_Status == true)
+                {
+                    <li style="color:forestgreen">completed</li>
+                }
+                else
+                {
+                    <li style="color:red">not complete</li>
+                }
+            }
+            </ul>
+            </td>
+            <td>
+            <ul>
+            @foreach (var i in item.ServicesForClients)
+             {
+                @if (@i.Service_For_Client_Payment_Status == true)
+                {
+                    <li style="color:forestgreen">paid</li>
+                }
+                else
+                {
+                    <li style="color:red">not paid</li>
+                }
+            }
+            </ul>
+            </td>
+            <td>
+            <ul>
+            @foreach (var i in item.ServicesForClients)
+             {
+                <li>@String.Format("{0:dd/MM/yyyy}", @i.Service_For_Client_Deadline_Date)</li>
+             }
+            </ul>
+            </td>
+            <td>
+            <ul>
+            @foreach (var i in item.ServicesForClients)
+             {
+                <li>@String.Format("{0:dd/MM/yyyy}", @i.Service_For_Client_Payment_Date)</li>
+             }
+             </ul>
+            </td>
+            <td>
+                <a asp-action="EditClient" asp-controller="client" asp-route-id="@item.Id">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                    </svg>
+                </a>
+                <a style="color:black" asp-action="DeleteClient" asp-controller="client" asp-route-id="@item.Id">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                    </svg>
+                </a>
+            </td>
+            </tr>
+         }
+    </tbody>
+</table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="ShowAllClients" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       class="btn btn-outline-dark">
+       <i class="glyphicon glyphicon-chevron-left"></i>
+        Previous
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="ShowAllClients" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       class="btn btn-outline-dark">
+       Next
+       <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
+

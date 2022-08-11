@@ -1,0 +1,18 @@
+﻿@model AdministratorApp.Models.ServiceForClient
+@using AdministratorApp.Models
+<input type="hidden" value="@Model.ServiceId" name="service_id" />
+<input type="hidden" value="@Model.ClientId" name="client_id" />
+<div>
+    <dl class="dl-horizontal">
+        <dt>Service to be removed:</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Service.Service_Name)
+        </dd>
+    </dl>
+</div>
+<form asp-controller="ServiceForClient" asp-action="DeleteServiceForClient" asp-route-client_id="@Model.ClientId" asp-route-service_id="@Model.ServiceId" method="post">
+    <div class="form-group">
+        <input type="submit" value="Delete" />
+    </div>
+</form>
+

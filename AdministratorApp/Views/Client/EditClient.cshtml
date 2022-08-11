@@ -1,0 +1,40 @@
+﻿@model AdministratorApp.Models.Client
+@using AdministratorApp.Models
+@{
+    ViewBag.Title = "Client's editing";
+}
+<form asp-action="EditClient" asp-controller="client" asp-route-id="@Model.Id">
+    <div class="form-group">
+        <label asp-for="Client_Name" class="control-label p-2"></label>
+        <input type="text" asp-for="Client_Name" class="form-control" />
+        <span asp-validation-for="Client_Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Client_Contact_Person" class="control-label p-2"></label>
+        <input type="text" asp-for="Client_Contact_Person" class="form-control" />
+        <span asp-validation-for="Client_Contact_Person" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Client_Contact_Phone" class="control-label p-1"></label>
+        <input type="tel" asp-for="Client_Contact_Phone" class="form-control" />
+        <span asp-validation-for="Client_Contact_Phone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Client_Contact_Email" class="control-label p-1"></label>
+        <input type="tel" asp-for="Client_Contact_Email" class="form-control" />
+        <span asp-validation-for="Client_Contact_Email" class="text-danger"></span>
+    </div>
+    <div class="editor-label p-1"><b>Choice of services:</b></div>
+    @foreach (var t in ViewBag.Services) 
+     {
+        <input type="checkbox" name="selectedServices" value="@t.Id"
+            @foreach (var s in Model.ServicesForClients)
+             {
+                 @(s.Service.Id.Equals(t.Id) ? "checked=\"checked\"" : "");
+             }
+             /> @t.Service_Name <br />
+     }
+    <div class="form-group p-1">
+        <input class="btn btn-outline-dark" type="submit" value="Save" />
+    </div>
+</form>
